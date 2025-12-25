@@ -1,0 +1,47 @@
+nav-links {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: white;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.auth-buttons .text-btn {
+    background: none;
+    border: none;
+    color: #a0a0a0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-book {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-book:hover {
+    background: #f44336;
+}
