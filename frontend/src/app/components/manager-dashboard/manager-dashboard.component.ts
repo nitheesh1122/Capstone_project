@@ -118,7 +118,7 @@ interface FoodItem {
            <div class="table-item" *ngFor="let table of tables" 
                 [ngClass]="getStatusClass(table.status)"
                 (click)="selectTable(table)"
-                (mouseenter)="selectTable(table)">
+
               <div class="table-header">
                 <span class="table-name">{{ table.name }}</span>
                 <span class="seats"><mat-icon>group</mat-icon> {{ table.seats }}</span>
@@ -198,6 +198,22 @@ interface FoodItem {
            <a href="#" class="view-all">View All</a>
         </div>
         
+        <div class="trending-grid">
+           <div class="trend-card" *ngFor="let item of filteredMenuItems">
+              <div class="trend-img" style="width: 80px; height: 80px; border-radius: 12px; overflow: hidden;">
+                 <img [src]="item.image" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div class="trend-info">
+                 <span class="week-tag">{{ item.category }}</span>
+                 <h4>{{ item.name }}</h4>
+                 <div class="price-add">
+                    <span class="price">₹{{ item.price }}</span>
+                    <button class="add-btn" (click)="addToOrder(item)">+</button>
+                 </div>
+              </div>
+           </div>
+        </div>
+        
         </div>
         <!-- END DASHBOARD VIEW -->
 
@@ -212,19 +228,23 @@ interface FoodItem {
                         <span class="badge">{{ tables.length }}</span>
                     </div>
                     <div class="mm-tables-grid">
-                        <div class="table-card-compact" *ngFor="let table of tables"
+                        <div class="table-card-realistic" *ngFor="let table of tables"
                              [ngClass]="getStatusClass(table.status)"
-                             (click)="selectTable(table)"
-                             (mouseenter)="selectTable(table)">
+                             (click)="selectTable(table)">
                              
-                             <div class="tc-header">
-                                <span class="tc-name">{{ table.name }}</span>
-                                <mat-icon class="tc-icon" [ngClass]="getStatusClass(table.status)">
-                                    {{ table.status === 'Occupied' ? 'restaurant_menu' : (table.status === 'Reserved' ? 'timer' : 'check_circle') }}
-                                </mat-icon>
+                             <div class="table-surface">
+                                <span class="ts-name">{{ table.id }}</span>
                              </div>
-                             <div class="tc-status">{{ table.status }}</div>
-                             <div class="tc-seats">{{ table.seats }} Seats</div>
+
+                             <!-- Chairs (Dynamic based on seats) -->
+                             <div class="chair top"></div>
+                             <div class="chair bottom"></div>
+                             <div class="chair left" *ngIf="table.seats >= 4"></div>
+                             <div class="chair right" *ngIf="table.seats >= 4"></div>
+                             <div class="chair top-left" *ngIf="table.seats >= 6"></div>
+                             <div class="chair bottom-right" *ngIf="table.seats >= 6"></div>
+                             
+                             <div class="table-status-dot" [ngClass]="getStatusClass(table.status)"></div>
                         </div>
                     </div>
                 </div>
@@ -248,19 +268,16 @@ interface FoodItem {
                     </div>
 
                     <!-- Menu Grid -->
-                    <div class="menu-grid-compact">
-                       <div class="menu-item-card" *ngFor="let item of filteredMenuItems">
-                           <div class="mi-img">
+                    <div class="menu-list-compact">
+                       <div class="menu-list-item" *ngFor="let item of filteredMenuItems">
+                           <div class="ml-img">
                                <img [src]="item.image" alt="{{item.name}}">
                            </div>
-                           <div class="mi-details">
+                           <div class="ml-info">
                                <h4>{{ item.name }}</h4>
-                               <span class="mi-cat">{{ item.category }}</span>
-                               <div class="mi-price-action">
-                                   <span class="mi-price">₹{{ item.price }}</span>
-                                   <button class="mi-add-btn" (click)="addToOrder(item)">+</button>
-                               </div>
                            </div>
+                           <div class="ml-price">₹{{ item.price }}</div>
+                           <button class="ml-add-btn" (click)="addToOrder(item)">+</button>
                        </div>
                        <div *ngIf="filteredMenuItems.length === 0" class="empty-menu-state">
                            <p>No items found in this category.</p>
@@ -579,8 +596,8 @@ interface FoodItem {
     
     /* Tables Column */
     .mm-tables-col {
-        width: 300px;
-        min-width: 300px;
+        width: 340px;
+        min-width: 340px;
         background: white;
         border-radius: 20px;
         padding: 20px;
@@ -592,34 +609,75 @@ interface FoodItem {
     .mm-tables-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 15px;
+        gap: 25px;
+        padding: 10px;
         overflow-y: auto;
-        padding-right: 5px;
     }
-    .table-card-compact {
-        background: #f9f9f9;
-        border-radius: 12px;
-        padding: 15px;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: 0.2s;
+    
+    .table-card-realistic {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
         display: flex;
-        flex-direction: column;
-        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.2s;
     }
-    .table-card-compact:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    }
-    .table-card-compact.occupied { background: #fff5f2; border-color: #ffccbc; }
-    .table-card-compact.available { background: #f0fcfb; border-color: #b2dfdb; }
-    .table-card-compact.reserved { background: #fff8f0; border-color: #ffe0b2; }
+    .table-card-realistic:hover { transform: scale(1.05); }
 
-    .tc-header { display: flex; justify-content: space-between; align-items: center; }
-    .tc-name { font-weight: 700; font-size: 0.9rem; color: #333; }
-    .tc-icon { font-size: 1.2rem; width: 1.2rem; height: 1.2rem; opacity: 0.8; }
-    .tc-status { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; }
-    .tc-seats { font-size: 0.7rem; color: #999; }
+    .table-surface {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 12px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: #333;
+    }
+    .table-card-realistic.occupied .table-surface { border-color: #ff5722; background: #fff5f2; color: #ff5722; }
+    .table-card-realistic.available .table-surface { border-color: #009688; background: #f0fcfb; color: #009688; }
+    .table-card-realistic.reserved .table-surface { border-color: #ff9800; background: #fff8f0; color: #ff9800; }
+
+    .chair {
+        position: absolute;
+        width: 30px;
+        height: 10px;
+        background: #ddd;
+        border-radius: 4px;
+        z-index: 1;
+    }
+    .table-card-realistic.occupied .chair { background: #ffccbc; }
+    .table-card-realistic.available .chair { background: #b2dfdb; }
+    .table-card-realistic.reserved .chair { background: #ffe0b2; }
+
+    .chair.top { top: -2px; left: 50%; transform: translateX(-50%); }
+    .chair.bottom { bottom: -2px; left: 50%; transform: translateX(-50%); }
+    .chair.left { left: 0px; top: 50%; width: 10px; height: 30px; transform: translateY(-50%) translateX(-12px); }
+    .chair.right { right: 0px; top: 50%; width: 10px; height: 30px; transform: translateY(-50%) translateX(12px); }
+    
+    .chair.top-left { top: 0; left: 0; width: 10px; height: 30px; transform: rotate(45deg) translate(-5px, -5px); }
+    .chair.bottom-right { bottom: 0; right: 0; width: 10px; height: 30px; transform: rotate(45deg) translate(5px, 5px); }
+
+    .table-status-dot {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        z-index: 3;
+    }
+    .table-status-dot.occupied { background: #ff5722; }
+    .table-status-dot.available { background: #009688; }
+    .table-status-dot.reserved { background: #ff9800; }
 
     /* Menu Column */
     .mm-menu-col {
@@ -640,42 +698,53 @@ interface FoodItem {
     .categories-row.compact { padding-bottom: 10px; margin-bottom: 20px; flex-shrink: 0; }
     .cat-img.small { width: 50px; height: 50px; }
     
-    .menu-grid-compact {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
+    .menu-list-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
         overflow-y: auto;
         padding-right: 5px;
         padding-bottom: 20px;
-        flex: 1; /* Fill remaining space */
-        min-height: 0; /* Prevent flex overflow check */
-    }
-    .empty-menu-state {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 40px;
-        color: #999;
-        font-style: italic;
-    }
-    .menu-item-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        border: 1px solid #f0f0f0;
-        transition: 0.2s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        display: flex;
-        flex-direction: column;
-    }
-    .menu-item-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        border-color: var(--primary-orange);
+        flex: 1;
     }
     
-    .mi-img { height: 140px; overflow: hidden; }
-    .mi-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
-    .menu-item-card:hover .mi-img img { transform: scale(1.05); }
+    .menu-list-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #f0f0f0;
+        transition: 0.2s;
+    }
+    .menu-list-item:hover {
+        border-color: var(--primary-orange);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        transform: translateX(5px);
+    }
+    
+    .ml-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+    .ml-img img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .ml-info { flex: 1; }
+    .ml-info h4 { margin: 0; font-size: 1rem; color: #333; font-weight: 700; }
+    
+    .ml-price { font-weight: 800; font-size: 1rem; color: #2d3436; margin-right: 15px; }
+    
+    .ml-add-btn {
+        width: 32px; height: 32px; border-radius: 8px; background: #ffe0d5; 
+        color: var(--primary-orange); border: none; font-weight: bold; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+        transition: 0.2s;
+    }
+    .ml-add-btn:hover { background: var(--primary-orange); color: white; }
     
     .mi-details { padding: 15px; flex: 1; display: flex; flex-direction: column; }
     .mi-details h4 { margin: 0 0 5px 0; font-size: 0.95rem; font-weight: 700; color: #333; }
