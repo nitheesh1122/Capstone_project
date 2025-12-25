@@ -703,62 +703,65 @@ interface FoodItem {
         flex-direction: column;
         gap: 15px;
         overflow-y: auto;
-        padding-right: 5px;
+        padding: 5px;
         padding-bottom: 20px;
         flex: 1;
+        width: 100%;
     }
     
     .menu-list-item {
         display: flex;
         align-items: center;
-        gap: 15px;
-        padding: 10px;
+        gap: 20px;
+        padding: 15px 20px;
         background: white;
-        border-radius: 12px;
-        border: 1px solid #f0f0f0;
-        transition: 0.2s;
+        border-radius: 16px;
+        border: 1px solid #e0e0e0;
+        transition: all 0.2s ease;
+        min-height: 85px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
     .menu-list-item:hover {
         border-color: var(--primary-orange);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        transform: translateX(5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
     }
     
     .ml-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 10px;
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
         overflow: hidden;
         flex-shrink: 0;
+        background: #f0f0f0;
+        border: 1px solid #eee;
     }
     .ml-img img { width: 100%; height: 100%; object-fit: cover; }
     
-    .ml-info { flex: 1; }
-    .ml-info h4 { margin: 0; font-size: 1rem; color: #333; font-weight: 700; }
+    .ml-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .ml-info h4 { 
+        margin: 0 0 5px 0; 
+        font-size: 1.1rem; 
+        color: #2d3436 !important; 
+        font-weight: 800; 
+        line-height: 1.3;
+    }
     
-    .ml-price { font-weight: 800; font-size: 1rem; color: #2d3436; margin-right: 15px; }
+    .ml-price { 
+        font-weight: 800; 
+        font-size: 1.1rem; 
+        color: #2d3436 !important; 
+        margin-right: 25px; 
+    }
     
     .ml-add-btn {
-        width: 32px; height: 32px; border-radius: 8px; background: #ffe0d5; 
-        color: var(--primary-orange); border: none; font-weight: bold; cursor: pointer;
-        display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+        width: 36px; height: 36px; border-radius: 10px; background: #ffe0d5; 
+        color: var(--primary-orange); border: none; font-weight: 800; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
         transition: 0.2s;
+        flex-shrink: 0;
     }
     .ml-add-btn:hover { background: var(--primary-orange); color: white; }
-    
-    .mi-details { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-    .mi-details h4 { margin: 0 0 5px 0; font-size: 0.95rem; font-weight: 700; color: #333; }
-    .mi-cat { font-size: 0.75rem; color: #999; margin-bottom: 15px; display: block; }
-    
-    .mi-price-action { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
-    .mi-price { font-weight: 800; font-size: 1rem; color: #2d3436; }
-    .mi-add-btn {
-        width: 30px; height: 30px; border-radius: 50%; background: #ffe0d5; 
-        color: var(--primary-orange); border: none; font-weight: bold; cursor: pointer;
-        display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-        transition: 0.2s;
-    }
-    .mi-add-btn:hover { background: var(--primary-orange); color: white; }
 
   `]
 })
