@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const queueController_1 = require("../controllers/queueController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const router = (0, express_1.Router)();
+router.post('/join', authMiddleware_1.authenticate, queueController_1.joinQueue);
+router.get('/status', authMiddleware_1.authenticate, queueController_1.getQueueStatus);
+router.post('/leave', authMiddleware_1.authenticate, queueController_1.leaveQueue);
+exports.default = router;

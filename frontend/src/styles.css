@@ -1,0 +1,141 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #ff5722 0%, #ff9f43 100%);
+    --bg-dark: #0b0b0b;
+    --bg-card: #1a1a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    --font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+}
+
+/* 
+   CUSTOM CREATIVE SCROLLBAR - Browser Level
+   Applies to html/body (viewport)
+*/
+::-webkit-scrollbar {
+    width: 8px;
+    /* Elegant width */
+    background: #0b0b0b;
+    /* Match body bg */
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff5722 0%, #ff9f43 100%);
+    border-radius: 10px;
+    border: 2px solid #0b0b0b;
+    /* Padding effect */
+}
+
+::-webkit-scrollbar-track {
+    background: #0b0b0b;
+}
+
+/* 
+   SCROLL CONTAINER SETUP 
+   Allow html/body to handle the global scroll. 
+   Prevent double scrollbars by letting the document flow naturally.
+*/
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
+    overflow-y: auto;
+    /* Enable standard browser scroll */
+}
+
+app-root {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    /* Ensure it covers full viewport */
+    /* REMOVED: height: 100vh and overflow: hidden/auto on app-root */
+    /* This allows app-root to grow with content and use body scroll */
+}
+
+/* Material Overrides */
+.mat-mdc-card {
+    background-color: var(--bg-card) !important;
+    border: var(--glass-border);
+    color: var(--text-primary) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--glass-shadow) !important;
+}
+
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+    font-family: var(--font-family) !important;
+    letter-spacing: 0.5px;
+    border-radius: 8px !important;
+    text-transform: uppercase;
+}
+
+.mat-mdc-raised-button.mat-primary {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+}
+
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+.mat-mdc-input-element {
+    color: white !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px 8px 0 0;
+}
+
+.mdc-floating-label,
+.mat-mdc-select-value {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Custom Utilities */
+.glass-panel {
+    background: rgba(20, 20, 20, 0.95);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    font-weight: 700;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #ff5722;
+}
+
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
