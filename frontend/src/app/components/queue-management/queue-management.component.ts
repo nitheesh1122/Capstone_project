@@ -71,7 +71,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
     mat-card { margin-bottom: 30px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
     
     .stats-row { display: flex; justify-content: space-around; padding: 15px 0; background: #f9fafb; border-bottom: 1px solid #eee; }
-    .stat-item { display: flex; flexDirection: column; align-items: center; }
+    .stat-item { display: flex; flex-direction: column; align-items: center; }
     .stat-item .label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
     .stat-item .value { font-size: 1.5rem; font-weight: bold; color: #333; }
 

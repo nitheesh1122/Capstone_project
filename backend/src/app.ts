@@ -7,6 +7,8 @@ import authRoutes from './routes/authRoutes';
 import tableRoutes from './routes/tableRoutes';
 import queueRoutes from './routes/queueRoutes';
 import reservationRoutes from './routes/reservationRoutes';
+import orderRoutes from './routes/orderRoutes';
+import serviceRoutes from './routes/serviceRoutes';
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/queue', queueRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/service', serviceRoutes);
 
 // Health Check
 app.get('/', (req: Request, res: Response) => {

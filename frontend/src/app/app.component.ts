@@ -16,13 +16,15 @@ import { filter } from 'rxjs/operators';
       <span class="logo gradient-text">WorldPlate</span>
       <span class="spacer"></span>
       
-      <div class="nav-links">
-        <button mat-button routerLink="/tables" routerLinkActive="active-link">
-          <mat-icon>table_restaurant</mat-icon> Tables
-        </button>
-        <button mat-button routerLink="/queue" routerLinkActive="active-link">
-          <mat-icon>people</mat-icon> Queue
-        </button>
+      <div class="nav-links" *ngIf="auth.user$ | async as user">
+        <ng-container *ngIf="user.role === 'Manager'">
+          <button mat-button routerLink="/tables" routerLinkActive="active-link">
+            <mat-icon>table_restaurant</mat-icon> Tables
+          </button>
+          <button mat-button routerLink="/queue" routerLinkActive="active-link">
+            <mat-icon>people</mat-icon> Queue
+          </button>
+        </ng-container>
       </div>
 
       <div class="user-actions" *ngIf="auth.user$ | async as user; else loginBtn">
@@ -34,7 +36,7 @@ import { filter } from 'rxjs/operators';
       </ng-template>
     </mat-toolbar>
     
-    <!-- Conditionally remove padding for Landing Page to allow full bleed -->
+    <!-- Conditionally remove padding for Landing Page and Dashboards to allow full bleed -->
     <main class="content-wrapper" [class.no-padding]="!showNavbar">
       <router-outlet></router-outlet>
     </main>
@@ -94,8 +96,13 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      // Hide navbar if we are on the landing page or manager dashboard
-      this.showNavbar = event.urlAfterRedirects !== '/' && !event.urlAfterRedirects.startsWith('/manager');
+      // Hide navbar if we are on the landing page, manager dashboard, login, or register pages
+      const hiddenRoutes = ['/', '/login', '/register', '/customer-dashboard'];
+      const currentUrl = event.urlAfterRedirects;
+
+      this.showNavbar = !hiddenRoutes.includes(currentUrl) &&
+        !currentUrl.startsWith('/manager') &&
+        !currentUrl.startsWith('/customer-dashboard');
     });
   }
 }

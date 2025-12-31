@@ -22,3 +22,24 @@ CREATE TABLE IF NOT EXISTS restaurant_tables (
     reservation_time DATETIME NULL,
     FOREIGN KEY (current_customer_id) REFERENCES users(id) ON DELETE SET NULL
 );
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    table_id INT,
+    items JSON NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    status ENUM('Received', 'Preparing', 'Ready', 'Served', 'Paid') DEFAULT 'Received',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS service_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    table_id INT NOT NULL,
+    request_type VARCHAR(50) NOT NULL,
+    status ENUM('Pending', 'Completed') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE CASCADE
+);

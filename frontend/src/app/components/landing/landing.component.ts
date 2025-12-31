@@ -563,7 +563,7 @@ export class LandingPageComponent implements AfterViewInit {
     { name: 'Spicy Pepperoni', category: 'Pizza', description: 'Pepperoni with extra cheese & spice', price: '₹199/-', image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=400&fit=crop' },
     { name: 'Veggie Supreme', category: 'Pizza', description: 'Loaded with bell peppers & olives', price: '₹179/-', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=400&fit=crop' },
     { name: 'BBQ Chicken', category: 'Pizza', description: 'Grilled chicken with smoky BBQ', price: '₹249/-', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=400&fit=crop' },
-    { name: 'Garlic Bread', category: 'Sides', description: 'Crispy buttery garlic bread sticks', price: '₹99/-', image: 'https://images.unsplash.com/photo-1573140247632-f84660f67627?q=80&w=400&fit=crop' },
+    { name: 'Garlic Bread', category: 'Sides', description: 'Crispy buttery garlic bread sticks', price: '₹99/-', image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&fit=crop' },
     { name: 'Coca Cola', category: 'Drinks', description: 'Chilled refreshing classic coke', price: '₹49/-', image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=400&fit=crop' }
   ];
 
