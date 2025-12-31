@@ -565,6 +565,25 @@ interface Staff {
                                         <!--Right Column: Stats & Add Button-->
                                             <div class="add-staff-col">
                                                 <div class="quick-stats-card">
+                                                    <!-- Saturday Night Planning Card -->
+                                                    <div class="saturday-card" style="margin-bottom: 25px;">
+                                                        <div class="sat-header">
+                                                            <h4 style="margin-bottom: 5px;"> Saturday Night Planning 🍕</h4>
+                                                            <span class="sat-badge"> Surge Expected </span>
+                                                        </div>
+                                                        <div class="sat-body">
+                                                            <div class="sat-info">
+                                                                <mat-icon> groups </mat-icon>
+                                                                <span> Extra 4 waitstaff required </span>
+                                                            </div>
+                                                            <div class="sat-info">
+                                                                <mat-icon> schedule </mat-icon>
+                                                                <span> 19:00 - 23:00 (Peak Hours) </span>
+                                                            </div>
+                                                        </div>
+                                                        <button class="view-all-link" style="margin-top: 5px;"> Manage Shifts </button>
+                                                    </div>
+
                                                     <h4>Today's Attendance</h4>
                                                         <div class="att-stat-row">
                                                             <span class="label"> Present </span>
@@ -1673,10 +1692,10 @@ interface Staff {
     /* Shared View Headers */
     .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0; }
     .vh-left { display: flex; align-items: center; gap: 15px; } 
-    .vh-left h3 { margin: 0; font-size: 1.3rem; font-weight: 700; color: #333; }
+    .vh-left h3 { margin: 0; font-size: 1.3rem; font-weight: 700; color: #fff; }
     .btn-action.compact { padding: 8px 20px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; width: auto; flex: none; margin-right: 5px; } /* Added margin-right */
     .btn-action.compact mat-icon { font-size: 1.2rem; width: 1.2rem; height: 1.2rem; }
-    .badge-pill { background: #eee; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #555; margin: 0; }
+    .badge-pill { background: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #fff; margin: 0; border: 1px solid #444; }
 
         /* OFFERS VIEW STYLES */
     .offers-view-container { height: 100%; display: flex; flex-direction: column; overflow-y: auto; padding-right: 20px; }
@@ -1906,10 +1925,10 @@ interface Staff {
     width: 50px; height: 50px; border-radius: 14px; background: #e3f2fd; color: #2196f3;
     display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem;
 }
-    .staff-title h4 { margin: 0 0 4px 0; font-size: 1rem; color: #fff; }
-    .rating-row { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; color: #888; margin-top: 2px; }
+    .staff-main-info h4 { margin: 0 0 4px 0; font-size: 1rem; color: #fff; }
+    .rating-row { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; color: #bbb; margin-top: 2px; }
     .rating-row .star { font-size: 1rem; width: 1rem; height: 1rem; color: #fbc02d; }
-    .role-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 6px; background: #eee; color: #666; }
+    .role-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 6px; background: #333; color: #fff; }
 
     /* Role Colors */
     .role-badge.chef { background: #ffebee; color: #d32f2f; }
@@ -1922,9 +1941,9 @@ interface Staff {
     .status-dot.absent { background: #f44336; box-shadow: 0 0 0 3px #ffebee; }
     .status-dot.on-leave { background: #ff9800; box-shadow: 0 0 0 3px #fff3e0; } /* 'on leave' class name handles space replacement in JS if used directly, else handled manually */
     
-    .staff-info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 0.85rem; color: #aaa; margin-bottom: 15px; }
+    .staff-info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 0.85rem; color: #ddd; margin-bottom: 15px; }
     .si-item { display: flex; align-items: center; gap: 8px; }
-    .si-item mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #aaa; }
+    .si-item mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: var(--primary-orange); }
     
     .staff-perf-row { display: flex; justify-content: space-between; align-items: center; background: #252525; padding: 8px 12px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; }
     .rating-val { font-weight: 700; color: #fff; font-size: 0.9rem; }
@@ -2078,12 +2097,22 @@ interface Staff {
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; }}
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }}
-    .quick-stats-card h4 { margin: 0 0 20px 0; opacity: 0.8; font-weight: 500; }
+    .quick-stats-card h4 { margin: 0 0 20px 0; font-weight: 700; color: #fff; }
     .att-stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
-    .att-stat-row.val { font-weight: 700; padding: 4px 10px; border-radius: 6px; min-width: 30px; text-align: center; }
+    .att-stat-row .val { font-weight: 700; padding: 4px 10px; border-radius: 6px; min-width: 30px; text-align: center; }
     .val.green { background: rgba(76, 175, 80, 0.2); color: #81c784; }
     .val.red { background: rgba(244, 67, 54, 0.2); color: #e57373; }
     .val.orange { background: rgba(255, 152, 0, 0.2); color: #ffb74d; }
+
+    /* Saturday Card Styling */
+    .saturday-card { background: linear-gradient(135deg, #1e1e1e, #111); border-radius: 24px; padding: 25px; border: 1px solid #333; position: relative; overflow: hidden; }
+    .saturday-card::after { content: '✨'; position: absolute; top: 10px; right: 10px; opacity: 0.3; font-size: 1.5rem; }
+    .sat-header { margin-bottom: 20px; }
+    .sat-header h4 { margin: 0 0 8px 0; color: #fff; font-size: 1.1rem; }
+    .sat-badge { background: rgba(255, 159, 67, 0.15); color: #ff9f43; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,159,67,0.3); }
+    .sat-body { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .sat-info { display: flex; align-items: center; gap: 10px; color: #ddd; font-size: 0.85rem; }
+    .sat-info mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; color: #ff9f43; }
 
 `]
 })
