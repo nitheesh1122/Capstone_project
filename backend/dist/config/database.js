@@ -1,18 +1,129 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const promise_1 = __importDefault(require("mysql2/promise"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const pool = promise_1.default.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASS || 'password',
-    database: process.env.DB_NAME || 'restaurant_db',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+// MOCK DATABASE for Demo Purposes (No MySQL required)
+const tables = [
+    { id: 1, table_number: '1', capacity: 2, type: 'Regular', status: 'Available' },
+    { id: 2, table_number: '2', capacity: 4, type: 'Regular', status: 'Occupied' },
+    { id: 3, table_number: '3', capacity: 6, type: 'VIP', status: 'Reserved' },
+];
+// Minimal user/queue mock.
+// In a real app, users would be in a DB. Here we just track queue state for "demo" users.
+// Password for all is 'password'
+const HASH = '$2a$10$zPzuDjyYHK2c97zPMvqaeeM5nl7emh2S5L5EwcCJHBfRLa009gTtG';
+let users = [
+    { id: 1, name: 'Alice', email: 'alice@test.com', password: HASH, role: 'User', queue_joined_at: null },
+    { id: 2, name: 'Bob', email: 'bob@test.com', password: HASH, role: 'User', queue_joined_at: new Date(Date.now() - 1000000) }, // 15 mins ago
+    { id: 3, name: 'Charlie', email: 'charlie@test.com', password: HASH, role: 'Manager', queue_joined_at: null }
+];
+// Helper to mimic MySQL response format: [rows, fields]
+const pool = {
+    getConnection: () => __awaiter(void 0, void 0, void 0, function* () {
+        return ({
+            release: () => { }
+        });
+    }),
+    // Generic signature to satisfy TS strict mode and controller usage like pool.query<RowDataPacket[]>
+    query: (sql_1, ...args_1) => __awaiter(void 0, [sql_1, ...args_1], void 0, function* (sql, params = []) {
+        console.log('MOCK SQL:', sql, params);
+        // 1. GET TABLES
+        if (sql.includes('SELECT * FROM restaurant_tables')) {
+            return [tables, undefined];
+        }
+        // 2. INSERT TABLE
+        if (sql.includes('INSERT INTO restaurant_tables')) {
+            const newTable = {
+                id: tables.length + 1,
+                table_number: params[0],
+                capacity: params[1],
+                type: params[2],
+                status: params[3]
+            };
+            tables.push(newTable);
+            // Return shape { insertId: ... } cast as any to satisfy T
+            return [{ insertId: newTable.id }, undefined];
+        }
+        // 3. UPDATE TABLE
+        if (sql.includes('UPDATE restaurant_tables')) {
+            const id = params[3]; // id is last
+            const table = tables.find(t => t.id === Number(id));
+            if (table) {
+                // params: [status, capacity, type, id]
+                // COALESCE logic mock: take param if not null/undefined
+                if (params[0] !== undefined)
+                    table.status = params[0];
+                if (params[1] !== undefined)
+                    table.capacity = params[1];
+                if (params[2] !== undefined)
+                    table.type = params[2];
+            }
+            return [{ affectedRows: table ? 1 : 0 }, undefined];
+        }
+        // 4. DELETE TABLE
+        if (sql.includes('DELETE FROM restaurant_tables')) {
+            const id = params[0];
+            const idx = tables.findIndex(t => t.id === Number(id));
+            if (idx !== -1)
+                tables.splice(idx, 1);
+            return [{ affectedRows: idx !== -1 ? 1 : 0 }, undefined];
+        }
+        // 5. UPDATE USER / QUEUE (JOIN/LEAVE) based on SQL pattern
+        if (sql.includes('UPDATE users SET queue_joined_at = NOW()')) {
+            const id = params[0];
+            const u = users.find(u => u.id === Number(id));
+            if (u)
+                u.queue_joined_at = new Date();
+            return [{ affectedRows: u ? 1 : 0 }, undefined];
+        }
+        if (sql.includes('UPDATE users SET queue_joined_at = NULL')) {
+            const id = params[0];
+            const u = users.find(u => u.id === Number(id));
+            if (u)
+                u.queue_joined_at = null;
+            return [{ affectedRows: u ? 1 : 0 }, undefined];
+        }
+        // 6. CHECK IF ALREADY IN QUEUE
+        if (sql.includes('SELECT queue_joined_at FROM users WHERE id = ?')) {
+            const id = params[0];
+            const u = users.find(u => u.id === Number(id));
+            // Return array of rows
+            return [[u ? { queue_joined_at: u.queue_joined_at } : {}], undefined];
+        }
+        // 7. GET QUEUE STATUS
+        if (sql.includes('SELECT id, name, queue_joined_at FROM users WHERE queue_joined_at IS NOT NULL')) {
+            const inQueue = users.filter(u => u.queue_joined_at !== null)
+                .sort((a, b) => a.queue_joined_at.getTime() - b.queue_joined_at.getTime());
+            return [inQueue, undefined];
+        }
+        // 8. FIND USER BY EMAIL (Login/Register)
+        if (sql.includes('SELECT * FROM users WHERE email = ?')) {
+            const email = params[0];
+            const u = users.find(user => user.email === email);
+            return [[u].filter(x => x), undefined]; // return [rows]
+        }
+        // 9. INSERT USER (Register)
+        if (sql.includes('INSERT INTO users')) {
+            // INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)
+            const newUser = {
+                id: users.length + 1,
+                name: params[0],
+                email: params[1],
+                password: params[2],
+                role: params[3] || 'User',
+                queue_joined_at: null
+            };
+            users.push(newUser);
+            return [{ insertId: newUser.id }, undefined];
+        }
+        return [[], undefined];
+    })
+};
 exports.default = pool;

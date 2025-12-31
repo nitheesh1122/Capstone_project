@@ -81,7 +81,11 @@ export class RegisterComponent implements OnInit {
         alert('Registration successful. Please login.');
         this.router.navigate(['/login'], { queryParams: { role: this.role } });
       },
-      error: (err) => alert('Registration failed')
+      error: (err) => {
+        console.error('Registration error:', err);
+        const errorMessage = err.error?.message || 'Registration failed. Please try again.';
+        alert(errorMessage);
+      }
     });
   }
 }
