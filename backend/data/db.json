@@ -1,6 +1,56 @@
 {
   "users": [],
   "tables": [],
-  "orders": [],
-  "serviceRequests": []
+  "orders": [
+    {
+      "id": 1767181364302,
+      "tableId": 5,
+      "customerId": 5,
+      "items": [
+        {
+          "item": {
+            "name": "Sushi Platter",
+            "category": "Starters",
+            "price": 450,
+            "image": "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500",
+            "type": "non-veg",
+            "isSpecial": true
+          },
+          "quantity": 1
+        },
+        {
+          "item": {
+            "name": "Chicken Wings",
+            "category": "Starters",
+            "price": 280,
+            "image": "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500",
+            "type": "non-veg"
+          },
+          "quantity": 1
+        },
+        {
+          "item": {
+            "name": "Crispy Calamari",
+            "category": "Starters",
+            "price": 320,
+            "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500",
+            "type": "non-veg"
+          },
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 1050,
+      "status": "Received",
+      "createdAt": "2025-12-31T11:42:44.302Z"
+    }
+  ],
+  "serviceRequests": [
+    {
+      "id": 1767181384982,
+      "tableId": 5,
+      "requestType": "Clean Table",
+      "status": "Pending",
+      "createdAt": "2025-12-31T11:43:04.982Z"
+    }
+  ]
 }
